@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Distribuidora del Sur</title>
+  <!-- indexación del archivo css -->
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <!-- sección: login
+       Pantalla de acceso simple.
+       Solo guarda el correo en localStorage para “simular sesión”. -->
+  <section id="auth" class="auth">
+    <!-- Columna izquierda con marca y fondo decorativo -->
+    <div class="auth__left">
+      <h1 class="brand">Distribuidora del Sur</h1>
+      <p class="tagline">La empresa amiga de los guatemaltecos.</p>
+    </div>
+
+    <!-- Columna derecha con el formulario -->
+    <div class="auth__right">
+      <form id="login-form" class="vstack gap-12">
+        <label class="field">
+          <span>Correo</span>
+          <input id="email" type="email" placeholder="correo@ejemplo.com" required />
+        </label>
+        <label class="field">
+          <span>Contraseña</span>
+          <input id="password" type="password" placeholder="••••••••" required />
+        </label>
+        <button class="btn btn--primary">Entrar</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Sección: aplicación 
+       Contiene el panel con sidebar y el área principal del CRUD. -->
+  <section id="app" class="app" style="display:none">
+    <!-- Sidebar fijo: usuario, buscador y acciones -->
+    <aside class="side">
+      <div class="side__top">
+        <div class="avatar" aria-hidden="true"></div>
+        <div class="user">
+          <!-- Aquí se muestra el correo del usuario logueado -->
+          <strong id="user-email">usuario@correo.com</strong>
+          <button id="logout" class="btn btn--ghost">Salir</button>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3 class="block__title">Buscar</h3>
+        <!-- Buscador: filtra por nombre o categoría -->
+        <input id="q" class="input" placeholder="Nombre o categoría" />
+      </div>
+
+      <div class="block">
+        <h3 class="block__title">Acciones</h3>
+        <!-- Borra todos los productos guardados -->
+        <button id="clear" class="btn btn--danger full">Vaciar todo</button>
+      </div>
+
+      <footer class="credits">Minimal V4 · DS</footer>
+    </aside>
+
+    <!-- Área principal: título, tabla y botón flotante "Nuevo" -->
+    <main class="main">
+      <header class="header">
+        <h2>Inventario</h2>
+        <small class="muted">CRUD con localStorage</small>
+      </header>
+
+      <div class="tableWrap">
+        <!-- Tabla del CRUD. El tbody se llena con JS. -->
+        <table id="grid">
+          <thead>
+            <tr>
+              <!-- Los th con data-key permiten ordenar por esa columna -->
+              <th data-key="name">Producto</th>
+              <th data-key="category">Categoría</th>
+              <th data-key="price">Precio</th>
+              <th>Estado</th>
+              <th data-key="createdAt">Creado</th>
+              <th class="t-right">Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <!-- Mensaje cuando no hay datos -->
+        <div id="empty" class="empty" hidden>
+          <div class="empty__dot"></div>
+          <p class="empty__text">No hay productos. Usa el botón “Nuevo”.</p>
+        </div>
+      </div>
+
+      <!-- Botón flotante para crear un producto -->
+      <button id="new" class="fab" title="Nuevo">+</button>
+    </main>
+  </section>
+
+  <!-- Modal del producto
+       Se usa <dialog>. Aquí capturamos/mostramos los campos. -->
+  <dialog id="product-modal" class="modal">
+    <form id="product-form" method="dialog" class="vstack gap-10">
+      <h3 id="modal-title">Nuevo producto</h3>
+      <!-- id oculto: existe cuando editamos -->
+      <input type="hidden" id="prod-id" />
+
+      <label class="field">
+        <span>Nombre</span>
+        <input id="prod-name" required placeholder="Ej. Lámpara LED" />
+      </label>
+
+      <label class="field">
+        <span>Categoría</span>
+        <input id="prod-cat" required placeholder="Ej. Iluminación" />
+      </label>
+
+      <label class="field">
+        <span>Precio (Q)</span>
+        <input id="prod-price" type="number" step="0.01" min="0" required placeholder="0.00" />
+      </label>
+
+      <label class="switch">
+        <input id="prod-active" type="checkbox" checked />
+        <span>Activo</span>
+      </label>
+
+      <!-- Botones del modal -->
+      <div class="hstack gap-8 end">
+        <button type="button" id="cancel" class="btn btn--ghost">Cancelar</button>
+        <button class="btn btn--primary">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Archivo js -->
+  <script src="script.js"></script>
+</body>
+</html>
